@@ -58,7 +58,17 @@
                         return 1
                     }
                 })
+                var lastDate = "";
+                var curDate = "";
+                if (items.length > 0) {
+                    lastDate = items[0].created_at.split('T')[0];
+                }
                 items.forEach(e => {
+                    curDate = e.created_at.split('T')[0];
+                    if (lastDate != curDate) {
+                        todoListItem.append("<p style='margin:16px 0 0;'>" + lastDate.replace(/-/g, '.') + "</p>");
+                        lastDate = curDate;
+                    }
                     addItem(e)
                 });
             }
