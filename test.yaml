@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: ubuntu
+  name: ubuntu
+spec:
+  containers:
+  - image: ubuntu
+    name: ubuntu
+    command: ["sleep", "7500d"]

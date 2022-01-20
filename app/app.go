@@ -3,12 +3,13 @@ package app
 import (
 	"encoding/json"
 	"fmt"
-	"net/http"
-	"strconv"
-
 	"github.com/gorilla/mux"
 	"github.com/sir/todos/model"
 	"github.com/unrolled/render"
+	"log"
+	"net/http"
+	"strconv"
+	"strings"
 )
 
 var rd *render.Render = render.New()
@@ -27,6 +28,14 @@ func (a *AppHandler) indexHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *AppHandler) getTodosHandler(w http.ResponseWriter, r *http.Request) {
+	bearToken := r.Header.Get("Authorization")
+	trArr := strings.Split(bearToken, " ")
+	if len(trArr) != 2 {
+		log.Println("token error")
+		rd.JSON(w, http.StatusUnauthorized, []*model.Todo{})
+		return
+	}
+	log.Println("Token : [" + trArr[0] + "] [" + trArr[1] + "]")
 	sessionid := new(model.Todo)
 	if err := json.NewDecoder(r.Body).Decode(sessionid); err != nil {
 		fmt.Print(err)
